@@ -11,6 +11,6 @@ public class EchoResource {
 	@GET
 	@Produces("text/plain")
 	public String echo(@QueryParam("m") String message) {
-		return "echo: jullanebest" + message;
+		return "echo: hest jullanebest" + message;
 	}
 }
