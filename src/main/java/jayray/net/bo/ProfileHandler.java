@@ -4,10 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ public class ProfileHandler{
     @GET
     @Path("/getProfile")
     @Produces(MediaType.APPLICATION_JSON)
-    public static Profile getProfile(@PathParam("id") long id) throws IOException, ClassNotFoundException {
+    public static Profile getProfile(@QueryParam("id") long id) throws IOException, ClassNotFoundException {
         em = emf.createEntityManager();
         em.getTransaction().begin();
 
@@ -51,8 +48,10 @@ public class ProfileHandler{
 
     }
 
-    
-    //TODO: ändra till profil objekt som inparameter?
+
+    @POST
+    @Path("/updateProfile")
+    @Consumes(MediaType.APPLICATION_JSON)
     public static boolean update(Profile profile){
         em=emf.createEntityManager();
         em.getTransaction().begin();
@@ -71,7 +70,10 @@ public class ProfileHandler{
         return true;
     }
 
-    public static Collection<Profile> search(String search,String exclude) throws IOException, ClassNotFoundException {
+    @Path("/searchProfile")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public static Collection<Profile> search(@QueryParam("search_txt") String search,String exclude) throws IOException, ClassNotFoundException {
         Collection out;//= new ArrayList<SimpleUser>();
         try {
             em = emf.createEntityManager();

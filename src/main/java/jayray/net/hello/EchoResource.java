@@ -7,7 +7,6 @@ import javax.ws.rs.QueryParam;
 
 @Path("echo")
 public class EchoResource {
-
 	@GET
 	@Produces("text/plain")
 	public String echo(@QueryParam("m") String message) {

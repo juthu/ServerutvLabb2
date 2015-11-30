@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by luben on 2015-11-07.
  */
 
-@Path("/user")
+@Path("user")
 public class UserHandler {
     //static SessionFactory seshF = HibUtil.getSessionFactory();
 
@@ -23,7 +23,7 @@ public class UserHandler {
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
-    public static User login( String username, String password){
+    public static User login(@QueryParam("name") String username,@QueryParam("password") String password){
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
@@ -40,9 +40,9 @@ public class UserHandler {
     }
 
     @GET
-    @Path("{id: \\d+}")
+    @Path("/getUserId")
     @Produces(MediaType.APPLICATION_JSON)
-    static User getUser(@PathParam("id") long id, EntityManager lem){
+    static User getUser(@QueryParam("id") long id, EntityManager lem){
 
        /* List<User> users = new ArrayList<User>();
         listOfCountries=createCountryList();
@@ -59,19 +59,19 @@ public class UserHandler {
    @POST
    @Path("/register")
    @Consumes(MediaType.APPLICATION_JSON)
-   public static boolean register(String name, String pass) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+   public static boolean register(User userIn) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
         try {
             existing = (User) em.createNamedQuery("findUserByUsername")
-                    .setParameter("name", name).getSingleResult();
+                    .setParameter("name", userIn.getUsername()).getSingleResult();
 
         } catch (NoResultException e1) {
 
             User user = new User();
-            user.setUsername(name);//TODO check email
-            user.setPassword(cryptWithMD5(pass));
+            user.setUsername(userIn.getUsername());//TODO check email
+            user.setPassword(cryptWithMD5(userIn.getPassword()));
             ProfileHandler.setDefaultProfile(user, em);
             em.persist(user);
             // em.detach(u);

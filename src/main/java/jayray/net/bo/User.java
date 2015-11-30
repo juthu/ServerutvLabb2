@@ -39,7 +39,6 @@ public class User implements Serializable{
     private String password;
     private Profile profile;
     private Collection<WallPost> wallPost;
-    private Set<ChatMessage> messages;
     private Collection<User> followed = new ArrayList();
     private Collection<User> follow = new ArrayList();
 
@@ -112,16 +111,6 @@ public class User implements Serializable{
 
     public void setFollow(Collection<User> follow) {
         this.follow = follow;
-    }
-
-    @ElementCollection(targetClass=ChatMessage.class,fetch= FetchType.EAGER)
-    @JoinTable(name = "chatmessage", joinColumns = @JoinColumn(name="User_ID"))
-    public Set<ChatMessage> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Set<ChatMessage> messages) {
-        this.messages = messages;
     }
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "user")
