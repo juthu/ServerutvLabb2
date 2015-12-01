@@ -10,6 +10,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by luben on 2015-11-07.
@@ -30,7 +32,7 @@ public class UserHandler {
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
-    public static User login(@QueryParam("name") String username,@QueryParam("password") String password){
+    public static String login(@QueryParam("name") String username,@QueryParam("password") String password){
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
@@ -43,7 +45,9 @@ public class UserHandler {
 
         em.getTransaction().commit();
         em.close();
-        return existing;
+
+        String result = JsonGenerator.generateJson(existing);
+        return result;
     }
 
     @GET
@@ -67,32 +71,31 @@ public class UserHandler {
    @Path("register")
    @Produces(MediaType.APPLICATION_JSON)
    public static String register(@FormParam("inputData") String inputData) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
-       System.out.println("BAJS1");
       String result = null;
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
-       System.out.println("BAJS2");
-       User userIn = (User) JsonGenerator.generateTOfromJson(inputData, User.class);
-       result=JsonGenerator.generateSuccessJson(userIn.getUsername()+" parsed successfully");
-       System.out.println("BAJS3");
+       User userIn = null;
        try {
+           userIn = (User) JsonGenerator.generateTOfromJson(inputData, User.class);
+       result=JsonGenerator.generateSuccessJson(userIn.getUsername()+" parsed successfully");
             existing = (User) em.createNamedQuery("findUserByUsername")
                     .setParameter("name", userIn.getUsername()).getSingleResult();
-           System.out.println("BAJS4");
         } catch (NoResultException e1) {
-           System.out.println("BAJS5");
             User user = new User();
             user.setUsername(userIn.getUsername());//TODO check email
             user.setPassword(cryptWithMD5(userIn.getPassword()));
-           // ProfileHandler.setDefaultProfile(user, em);
-           System.out.println("BAJS6");
-            em.persist(user);
+          // user.setWallPost(new ArrayList<WallPost>());
+           //Collection<User> f = new ArrayList<User>();
+           //user.setFollow(f);
+          // user.setFollowed(f);
+           em.persist(user);
+          // ProfileHandler.setDefaultProfile(user, em);
+
             // em.detach(u);
             // em.refresh(u);
             em.getTransaction().commit();
             em.close();
-
             result = JsonGenerator.generateJson(user);
         }
         if (existing != null) {

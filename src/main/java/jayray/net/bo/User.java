@@ -1,6 +1,7 @@
 package jayray.net.bo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -8,7 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 //import java.util.Collection;
 
@@ -37,6 +37,7 @@ public class User implements Serializable{
     private long u_id;
     private String username;
     private String password;
+
     private Profile profile;
     private Collection<WallPost> wallPost;
     private Collection<User> followed = new ArrayList();
@@ -78,6 +79,7 @@ public class User implements Serializable{
         this.password = password;
     }
 
+    @JsonIgnore
     @OneToOne(cascade= CascadeType.ALL, mappedBy = "user")
     public Profile getProfile() {
         return profile;
@@ -87,6 +89,7 @@ public class User implements Serializable{
         this.profile = profile;
     }
 
+    @JsonIgnore
     @ManyToMany(cascade =  CascadeType.ALL)
     @JoinTable(name="tbl_friends",
             joinColumns=@JoinColumn(name="u_id"),
@@ -100,6 +103,7 @@ public class User implements Serializable{
         this.followed = followed;
     }
 
+    @JsonIgnore
     @ManyToMany(cascade =  CascadeType.ALL)
     @JoinTable(name="tbl_friends",
             joinColumns=@JoinColumn(name="u_id"),
@@ -113,6 +117,7 @@ public class User implements Serializable{
         this.follow = follow;
     }
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "user")
     public Collection<WallPost> getWallPost() {
         return wallPost;

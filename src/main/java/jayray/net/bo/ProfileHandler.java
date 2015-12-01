@@ -95,9 +95,9 @@ public class ProfileHandler{
         p.setName(u.getUsername());
         p.setUser(u);
         u.setProfile(p);
-     //   em.refresh(p);
      //   em.merge(p);
         em.persist(p);
+            em.merge(u);
 //        em.persist(u);
 //       // em.detach(u);
 //       // em.refresh(u);
