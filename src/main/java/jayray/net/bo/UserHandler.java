@@ -1,5 +1,7 @@
 package jayray.net.bo;
 
+import jayray.net.json.JsonGenerator;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -62,33 +64,38 @@ public class UserHandler {
     }
 
    @POST
-   @Path("/register")
-   @Consumes(MediaType.APPLICATION_JSON)
-   public static boolean register(User userIn) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+   @Path("register")
+   @Produces(MediaType.APPLICATION_JSON)
+   public static String register(@QueryParam("name") String name, @QueryParam("password") String password) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+      String result = null;
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
         try {
             existing = (User) em.createNamedQuery("findUserByUsername")
-                    .setParameter("name", userIn.getUsername()).getSingleResult();
+                    .setParameter("name", name).getSingleResult();
 
         } catch (NoResultException e1) {
 
             User user = new User();
-            user.setUsername(userIn.getUsername());//TODO check email
-            user.setPassword(cryptWithMD5(userIn.getPassword()));
+            user.setUsername(name);//TODO check email
+            user.setPassword(cryptWithMD5(password));
             ProfileHandler.setDefaultProfile(user, em);
             em.persist(user);
             // em.detach(u);
             // em.refresh(u);
             em.getTransaction().commit();
             em.close();
+
+
+            result = JsonGenerator.generateJson(user);
+
         }
         if (existing != null) {
             throw new UserAlreadyExistExecption("user already exists");
         }
 
-        return true;
+        return result;
     }
 
     static String cryptWithMD5(String pass) {
