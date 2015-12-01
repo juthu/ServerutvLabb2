@@ -66,35 +66,38 @@ public class UserHandler {
    @POST
    @Path("register")
    @Produces(MediaType.APPLICATION_JSON)
-   public static String register(@QueryParam("name") String name, @QueryParam("password") String password) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+   public static String register(@FormParam("inputData") String inputData) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+       System.out.println("BAJS1");
       String result = null;
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
-        try {
+       System.out.println("BAJS2");
+       User userIn = (User) JsonGenerator.generateTOfromJson(inputData, User.class);
+       result=JsonGenerator.generateSuccessJson(userIn.getUsername()+" parsed successfully");
+       System.out.println("BAJS3");
+       try {
             existing = (User) em.createNamedQuery("findUserByUsername")
-                    .setParameter("name", name).getSingleResult();
-
+                    .setParameter("name", userIn.getUsername()).getSingleResult();
+           System.out.println("BAJS4");
         } catch (NoResultException e1) {
-
+           System.out.println("BAJS5");
             User user = new User();
-            user.setUsername(name);//TODO check email
-            user.setPassword(cryptWithMD5(password));
-            ProfileHandler.setDefaultProfile(user, em);
+            user.setUsername(userIn.getUsername());//TODO check email
+            user.setPassword(cryptWithMD5(userIn.getPassword()));
+           // ProfileHandler.setDefaultProfile(user, em);
+           System.out.println("BAJS6");
             em.persist(user);
             // em.detach(u);
             // em.refresh(u);
             em.getTransaction().commit();
             em.close();
 
-
             result = JsonGenerator.generateJson(user);
-
         }
         if (existing != null) {
             throw new UserAlreadyExistExecption("user already exists");
         }
-
         return result;
     }
 
