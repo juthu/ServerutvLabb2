@@ -19,6 +19,11 @@ public class UserHandler {
 
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
+    @GET
+    @Produces("text/plain")
+    public String echo(@QueryParam("m") String message) {
+        return "echo: hest jullanebest" + message;
+    }
 
     @GET
     @Path("/login")

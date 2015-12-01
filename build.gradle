@@ -13,8 +13,12 @@ dependencies {
 	compile "javax.ws.rs:jsr311-api:1.1.1"
 	compile 'javax.persistence:persistence-api:1.0.2'
 
-	compile group: 'org.hibernate', name: 'hibernate-core', version: '4.2.2.Final'
-	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.2.Final'
+	compile 'mysql:mysql-connector-java:5.1.37'
+
+
+	compile group: 'org.hibernate', name: 'hibernate-commons-annotations', version: '3.2.0.Final'
+	compile group: 'org.hibernate', name: 'hibernate-core', version: '4.2.7.SP1'
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.3.Final'
 
 	compile 'com.sun.jersey:jersey-server:1.16'
 	compile 'com.sun.jersey:jersey-core:1.16'
@@ -31,8 +35,9 @@ dependencies {
 
 	testCompile "junit:junit-dep:4.10"
 
-	runtime group: 'org.hibernate', name: 'hibernate-core', version: '4.2.2.Final'
-	runtime group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.2.Final'
+	runtime group: 'org.hibernate', name: 'hibernate-commons-annotations', version: '3.2.0.Final'
+	runtime group: 'org.hibernate', name: 'hibernate-core', version: '4.2.7.SP1'
+	runtime group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.3.Final'
 
 }
 
