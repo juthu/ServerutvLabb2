@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by luben on 2015-11-07.
  */
-@Path("users")
+@Path("/users/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserHandler {

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by sirena on 2015-11-18.
  */
-@Path("/wall")
+@Path("/wall/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class WallHandler {

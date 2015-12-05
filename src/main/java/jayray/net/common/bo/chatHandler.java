@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by luben on 2015-11-28.
  */
-@Path("/chat")
+@Path("/chat/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class chatHandler {

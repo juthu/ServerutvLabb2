@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Created by sirena on 2015-11-18.
  */
-@Path("/profile")
+@Path("/profile/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProfileHandler{
