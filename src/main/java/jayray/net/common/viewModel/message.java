@@ -1,8 +1,12 @@
-package common.viewModel;
+package jayray.net.common.viewModel;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by luben on 2015-12-05.
  */
+@XmlRootElement
+
 public class message {
     private long sender;
     private long recvier;
@@ -11,6 +15,9 @@ public class message {
     public message(long sender, long recvier) {
         this.sender = sender;
         this.recvier = recvier;
+    }
+
+    public message() {
     }
 
     public long getSender() {

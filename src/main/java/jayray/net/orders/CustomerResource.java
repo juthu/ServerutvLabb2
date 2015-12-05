@@ -11,7 +11,9 @@ public class CustomerResource {
 
 	@GET
 	@Path("id/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON,
+//			MediaType.APPLICATION_XML
+ })
 	public Customer getCustomer(@PathParam("id") String id) {
 		CustomerDao customerDao = new CustomerDao();
 		return customerDao.fetchCustomer(id);

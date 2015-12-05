@@ -1,12 +1,19 @@
-package common.viewModel;
+package jayray.net.common.viewModel;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by luben on 2015-12-05.
  */
+@XmlRootElement
+
 public class post {
     private long uid;
 //    private long id;
     private String message;
+
+    public post() {
+    }
 
     public long getUid() {
         return uid;

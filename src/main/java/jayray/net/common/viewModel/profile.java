@@ -1,8 +1,12 @@
-package common.viewModel;
+package jayray.net.common.viewModel;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by luben on 2015-12-05.
  */
+@XmlRootElement
+
 public class profile {
     private long uid;
     private String name;
@@ -12,6 +16,9 @@ public class profile {
 
     public profile(String name) {
         this.name = name;
+    }
+
+    public profile() {
     }
 
     public long getUid() {

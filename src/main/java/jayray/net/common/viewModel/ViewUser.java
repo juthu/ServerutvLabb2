@@ -1,11 +1,14 @@
-package common.viewModel;
+package jayray.net.common.viewModel;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by luben on 2015-12-05.
  */
+@XmlRootElement
+
 public class ViewUser {
     private String username;
     private String pass;
@@ -18,9 +21,13 @@ public class ViewUser {
         return pass;
     }
 
+    public ViewUser() {
+    }
+
     public ViewUser(String username, String pass) {
 
         this.username = username;
+
         this.pass = cryptWithMD5(pass);
     }
 
