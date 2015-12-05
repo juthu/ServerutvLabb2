@@ -68,12 +68,12 @@ public class ProfileHandler{
     }
 
     @GET
-    @Path("search")
-    public static Collection<profile> search(profile search,profile me){//TODO magi med id
+    @Path("{search}/{me}")
+    public static Collection<profile> search(@PathParam("search") String search,@PathParam("me") String me){//TODO magi med id
         Collection<profile> out = new ArrayList<profile>();
         try {
             em = emf.createEntityManager();
-            Collection <Profile> tmp = em.createNamedQuery("findUserByUsernameContains").setParameter("search", "%"+search.getName()+"%").setParameter("exclude", me.getName()).getResultList();
+            Collection <Profile> tmp = em.createNamedQuery("findUserByUsernameContains").setParameter("search", "%"+search+"%").setParameter("exclude", me).getResultList();
 
             for (Profile p: tmp) {
                out.add(new profile(p.getU_id(),p.getName(),p.getAge(),p.getIsFemale(),p.getDescription()));

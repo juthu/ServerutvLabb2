@@ -79,9 +79,9 @@ public class UserHandler {
     }
 
     @GET
-    @Path("hejsan/{msg}")
-    public String hello(@PathParam("msg") String msg){
-        return "hej, "+msg;
+    @Path("hejsan/{id}/{msg}")
+    public String hello(@PathParam("id") int id,@PathParam("msg") String msg){
+        return "hej, "+id+msg;
     }
 
     @GET
