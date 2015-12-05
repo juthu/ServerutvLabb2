@@ -1,15 +1,14 @@
-package common.bo;
+package jayray.net.common.bo;
 
-import common.model.User;
-import common.model.WallPost;
-import common.viewModel.post;
+import jayray.net.common.model.User;
+import jayray.net.common.model.WallPost;
+import jayray.net.common.viewModel.post;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,13 +17,14 @@ import java.util.List;
  * Created by sirena on 2015-11-18.
  */
 @Path("/wall")
-@Produces("application/json")
-@Consumes("application/json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class WallHandler {
 
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
 
+    @POST
     public static boolean post(post p) {
         boolean out = true;
         try {
@@ -51,9 +51,11 @@ public class WallHandler {
         }
     }
 
-    public static List<post> getPosts(long username) {
+    @GET
+    @Path("{id}")
+    public static List<post> getPosts(@PathParam("id") long id) {//magi med id
         em = emf.createEntityManager();
-        User u = UserHandler.getUser(username, em);
+        User u = UserHandler.getUser(id, em);
         //TODO should close em
         Collection<WallPost> wposts=u.getWallPost();
         ArrayList<post> out=new ArrayList<>();

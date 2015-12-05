@@ -1,15 +1,14 @@
-package common.bo;
+package jayray.net.common.bo;
 
-import common.model.User;
-import common.viewModel.Follower;
-import common.viewModel.profile;
+import jayray.net.common.model.User;
+import jayray.net.common.viewModel.Follower;
+import jayray.net.common.viewModel.profile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,12 +17,13 @@ import java.util.List;
  * Created by luben on 2015-11-26.
  */
 @Path("/friends")
-@Produces("application/json")
-@Consumes("application/json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class FriendHandler {
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
 
+    @POST
     public static boolean addFollower(Follower a){
         boolean out=true;
         try {
@@ -56,9 +56,11 @@ public class FriendHandler {
 
     }
 
-    public static Collection<profile> getFollowers(long user){//TODO id only
+    @GET
+    @Path("followers/{id}")
+    public static Collection<profile> getFollowers(@PathParam("id") long id){//TODO id only
         em = emf.createEntityManager();
-        User me = UserHandler.getUser(user,em);
+        User me = UserHandler.getUser(id,em);
         Collection<User> out= me.getFollow();
 
         ArrayList<profile> followers= new ArrayList<>();
@@ -71,10 +73,11 @@ public class FriendHandler {
     }
 
 
-
-    public static int countFollowing(long user){//TODO id only
+    @GET
+    @Path("following/{id}")
+    public static int countFollowing(@PathParam("id") long id){//TODO id only
         em = emf.createEntityManager();
-        User u = UserHandler.getUser(user,em);
+        User u = UserHandler.getUser(id,em);
         // Collection<User> out= u.getFollowed();
         List out = em.createNativeQuery("" +
                 "SELECT user.u_id,user.username " +

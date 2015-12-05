@@ -1,14 +1,13 @@
-package common.bo;
+package jayray.net.common.bo;
 
-import common.model.ChatMessage;
-import common.viewModel.message;
+import jayray.net.common.model.ChatMessage;
+import jayray.net.common.viewModel.message;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +15,13 @@ import java.util.List;
  * Created by luben on 2015-11-28.
  */
 @Path("/chat")
-@Produces("application/json")
-@Consumes("application/json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class chatHandler {
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
 
+    @GET
     public static List<message> getMessages(message messages) {
         em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -37,6 +37,7 @@ public class chatHandler {
         return outMessage;
     }
 
+    @POST
     public static boolean sendMessage(message m){
         em = emf.createEntityManager();
         em.getTransaction().begin();

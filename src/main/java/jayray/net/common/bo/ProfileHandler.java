@@ -1,16 +1,15 @@
-package common.bo;
+package jayray.net.common.bo;
 
-import common.model.Profile;
-import common.model.User;
-import common.viewModel.profile;
+import jayray.net.common.model.Profile;
+import jayray.net.common.model.User;
+import jayray.net.common.viewModel.profile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,22 +17,24 @@ import java.util.Collection;
  * Created by sirena on 2015-11-18.
  */
 @Path("/profile")
-@Produces("application/json")
-@Consumes("application/json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProfileHandler{
 
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
    // static SessionFactory seshF = HibUtil.getSessionFactory();
 
-    public static profile getProfile(long username)  {//TODO id only
+    @GET
+    @Path("{id}")
+    public static profile getProfile(@PathParam("id") long id)  {//TODO id params magi
         em = emf.createEntityManager();
         em.getTransaction().begin();
 
         User existing = null;
         try {
             existing = (User) em.createNamedQuery("findUserById")
-                    .setParameter("id", username).getSingleResult();
+                    .setParameter("id", id).getSingleResult();
         }catch (NullPointerException e){
             System.out.printf("The user do not exist");
         }catch (NoResultException e){
@@ -47,7 +48,7 @@ public class ProfileHandler{
 
     }
 
-
+    @POST
     public static boolean update(profile me){
         em=emf.createEntityManager();
         em.getTransaction().begin();
@@ -66,7 +67,9 @@ public class ProfileHandler{
         return true;
     }
 
-    public static Collection<profile> search(profile search,profile me){
+    @GET
+    @Path("search")
+    public static Collection<profile> search(profile search,profile me){//TODO magi med id
         Collection<profile> out = new ArrayList<profile>();
         try {
             em = emf.createEntityManager();

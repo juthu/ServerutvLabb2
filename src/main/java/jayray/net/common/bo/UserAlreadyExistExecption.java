@@ -1,4 +1,4 @@
-package common.bo;
+package jayray.net.common.bo;
 
 /**
  * Created by luben on 2015-11-09.

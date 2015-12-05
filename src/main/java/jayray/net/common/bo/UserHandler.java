@@ -1,29 +1,31 @@
-package common.bo;
+package jayray.net.common.bo;
 
-import common.model.User;
-import common.viewModel.ViewUser;
+import jayray.net.common.model.User;
+import jayray.net.common.viewModel.ViewUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by luben on 2015-11-07.
  */
-@Path("/users")
-@Produces("application/json")
-@Consumes("application/json")
+@Path("users")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class UserHandler {
     //static SessionFactory seshF = HibUtil.getSessionFactory();
 
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
 
+    //rest/users/login
+    @POST
+    @Path("login")
     public static long login(ViewUser u){
         em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -46,6 +48,9 @@ public class UserHandler {
         return out;
     }
 
+    //rest/users/reg
+    @PUT
+    @Path("reg")
     public static boolean register(ViewUser u) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
         em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -71,6 +76,18 @@ public class UserHandler {
         }
 
         return true;
+    }
+
+    @GET
+    @Path("hejsan/{msg}")
+    public String hello(@PathParam("msg") String msg){
+        return "hej, "+msg;
+    }
+
+    @GET
+    @Path("hej")
+    public String hello(){
+        return "hej";
     }
 
 }

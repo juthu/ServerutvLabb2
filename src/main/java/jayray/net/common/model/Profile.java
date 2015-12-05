@@ -1,4 +1,4 @@
-package common.model;
+package jayray.net.common.model;
 
 
 import org.hibernate.annotations.GenericGenerator;
