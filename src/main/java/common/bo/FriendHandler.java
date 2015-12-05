@@ -7,6 +7,9 @@ import common.viewModel.profile;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +17,9 @@ import java.util.List;
 /**
  * Created by luben on 2015-11-26.
  */
+@Path("/friends")
+@Produces("application/json")
+@Consumes("application/json")
 public class FriendHandler {
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("pres_comm");
     static EntityManager em;
