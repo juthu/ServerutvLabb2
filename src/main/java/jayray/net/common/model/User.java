@@ -1,6 +1,9 @@
 package jayray.net.common.model;
 
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,9 +36,9 @@ public class User implements Serializable{
     private long u_id;
     private String username;
     private String password;
+
     private Profile profile;
     private Collection<WallPost> wallPost;
-   // private Collection<ChatMessage> messages;//TODO ??????
     private Collection<User> followed = new ArrayList<>();
     private Collection<User> follow = new ArrayList<>();
 
