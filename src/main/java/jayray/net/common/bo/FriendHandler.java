@@ -1,5 +1,6 @@
 package jayray.net.common.bo;
 
+import com.google.gson.Gson;
 import jayray.net.common.model.User;
 import jayray.net.common.viewModel.Follower;
 import jayray.net.common.viewModel.profile;
@@ -23,7 +24,10 @@ public class FriendHandler {
     static EntityManager em;
 
     @POST
-    public static boolean addFollower(Follower a){
+    public static boolean addFollower(String json){
+        Gson gson=new Gson();
+        Follower a=gson.fromJson(json,Follower.class);
+
         boolean out=true;
         try {
             em = emf.createEntityManager();

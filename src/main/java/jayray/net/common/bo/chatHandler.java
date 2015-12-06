@@ -1,5 +1,6 @@
 package jayray.net.common.bo;
 
+import com.google.gson.Gson;
 import jayray.net.common.model.ChatMessage;
 import jayray.net.common.viewModel.message;
 
@@ -39,7 +40,9 @@ public class chatHandler {
     }
 
     @POST
-    public static boolean sendMessage(message m){
+    public static boolean sendMessage(String json){
+        Gson gson = new Gson();
+        message m = gson.fromJson(json,message.class);
         em = emf.createEntityManager();
         em.getTransaction().begin();
         ChatMessage msg = new ChatMessage();

@@ -1,5 +1,6 @@
 package jayray.net.common.bo;
 
+import com.google.gson.Gson;
 import jayray.net.common.model.User;
 import jayray.net.common.model.WallPost;
 import jayray.net.common.viewModel.post;
@@ -25,7 +26,9 @@ public class WallHandler {
     static EntityManager em;
 
     @POST
-    public static boolean post(post p) {
+    public static boolean post(String json) {
+        Gson gson = new Gson();
+        post p =gson.fromJson(json,post.class);
         boolean out = true;
         try {
             em = emf.createEntityManager();

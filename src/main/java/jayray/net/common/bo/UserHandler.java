@@ -1,6 +1,8 @@
 package jayray.net.common.bo;
 
+import com.google.gson.Gson;
 import jayray.net.common.model.User;
+import jayray.net.common.viewModel.profile;
 import jayray.net.common.viewModel.ViewUser;
 
 import javax.persistence.EntityManager;
@@ -26,7 +28,10 @@ public class UserHandler {
     //rest/users/login
     @POST
     @Path("login")
-    public static long login(ViewUser u){
+    public static profile login(String json){
+        Gson gson = new Gson();
+        ViewUser u=gson.fromJson(json,ViewUser.class);
+        System.out.println("login"+u);
         em = emf.createEntityManager();
         em.getTransaction().begin();
         User existing = null;
@@ -34,12 +39,15 @@ public class UserHandler {
             existing = (User) em.createNamedQuery("findUserByUsernamePassword")
                     .setParameter("name", u.getUsername()).setParameter("password", u.getPass()).getSingleResult();
         } catch (NoResultException e) {
-            return -1;
+            return null;
         }
 
         em.getTransaction().commit();
         em.close();
-        return existing.getU_id();
+        System.out.println(existing.getU_id());
+        profile out =new profile();
+        out.setUid(existing.getU_id());
+        return out;
     }
 
     static User getUser(long id,EntityManager lem){
@@ -51,9 +59,11 @@ public class UserHandler {
     //rest/users/reg
     @POST
     @Path("reg")
-    public static boolean register(ViewUser u) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
+    public static boolean register(String json) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
         em = emf.createEntityManager();
         em.getTransaction().begin();
+        Gson gson = new Gson();
+        ViewUser u=gson.fromJson(json,ViewUser.class);
         User existing = null;
         try {
             existing = (User) em.createNamedQuery("findUserByUsername")
@@ -84,9 +94,12 @@ public class UserHandler {
         return "hej, "+id+msg;
     }
 
-    @GET
+    @POST
     @Path("hej")
-    public String hello(){
+    public String hello(String json){
+        System.out.println(json);
+        Gson gson = new Gson();
+        System.out.println( gson.fromJson(json,ViewUser.class));
         return "hej";
     }
 

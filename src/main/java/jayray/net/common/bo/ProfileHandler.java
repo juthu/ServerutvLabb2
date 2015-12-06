@@ -1,5 +1,6 @@
 package jayray.net.common.bo;
 
+import com.google.gson.Gson;
 import jayray.net.common.model.Profile;
 import jayray.net.common.model.User;
 import jayray.net.common.viewModel.Search;
@@ -50,7 +51,10 @@ public class ProfileHandler{
     }
 
     @POST
-    public static boolean update(profile me){
+    public static boolean update(String json){
+        Gson gson=new Gson();
+        profile me=gson.fromJson(json,profile.class);
+
         em=emf.createEntityManager();
         em.getTransaction().begin();
         User u=UserHandler.getUser(me.getUid(),em);
@@ -70,7 +74,10 @@ public class ProfileHandler{
 
     @POST
     @Path("search")
-    public static Collection<profile> search(Search s){
+    public static Collection<profile> search(String json){
+        Gson gson=new Gson();
+        Search s=gson.fromJson(json,Search.class);
+
         Collection<profile> out = new ArrayList<profile>();
         try {
             em = emf.createEntityManager();
