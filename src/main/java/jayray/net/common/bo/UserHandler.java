@@ -49,7 +49,7 @@ public class UserHandler {
     }
 
     //rest/users/reg
-    @PUT
+    @POST
     @Path("reg")
     public static boolean register(ViewUser u) throws NoSuchAlgorithmException, UserAlreadyExistExecption {
         em = emf.createEntityManager();

@@ -11,7 +11,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by luben on 2015-11-26.
@@ -75,19 +74,23 @@ public class FriendHandler {
 
     @GET
     @Path("following/{id}")
-    public static int countFollowing(@PathParam("id") long id){//TODO id only
+    public static Collection<profile> countFollowing(@PathParam("id") long id){//TODO id only
         em = emf.createEntityManager();
-        User u = UserHandler.getUser(id,em);
-        // Collection<User> out= u.getFollowed();
-        List out = em.createNativeQuery("" +
-                "SELECT user.u_id,user.username " +
-                "FROM tbl_friends " +
-                "INNER JOIN user " +
-                "ON user.u_id = tbl_friends.f_id " +
-                "WHERE f_id =:fid").setParameter("fid",u.getU_id()).getResultList();
+        User user = UserHandler.getUser(id,em);
+         Collection<User> out= user.getFollowed();
+        ArrayList<profile> following= new ArrayList<>();
+        for (User u:out) {
+            following.add(new profile(u.getU_id(), u.getProfile().getName(), u.getProfile().getAge(), u.getProfile().getIsFemale(), u.getProfile().getDescription()));
+        }
+//        List out = em.createNativeQuery("" +
+//                "SELECT user.u_id,user.username " +
+//                "FROM tbl_friends " +
+//                "INNER JOIN user " +
+//                "ON user.u_id = tbl_friends.f_id " +
+//                "WHERE f_id =:fid").setParameter("fid",u.getU_id()).getResultList();
         em.close();
 
-        return out.size();
+        return following;
     }
 //
 //    public class custom{
