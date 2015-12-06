@@ -2,6 +2,7 @@ package jayray.net.common.bo;
 
 import jayray.net.common.model.Profile;
 import jayray.net.common.model.User;
+import jayray.net.common.viewModel.Search;
 import jayray.net.common.viewModel.profile;
 
 import javax.persistence.EntityManager;
@@ -67,13 +68,13 @@ public class ProfileHandler{
         return true;
     }
 
-    @GET
-    @Path("{search}/{me}")
-    public static Collection<profile> search(@PathParam("search") String search,@PathParam("me") String me){//TODO magi med id
+    @POST
+    @Path("search")
+    public static Collection<profile> search(Search s){
         Collection<profile> out = new ArrayList<profile>();
         try {
             em = emf.createEntityManager();
-            Collection <Profile> tmp = em.createNamedQuery("findUserByUsernameContains").setParameter("search", "%"+search+"%").setParameter("exclude", me).getResultList();
+            Collection <Profile> tmp = em.createNamedQuery("findUserByUsernameContains").setParameter("search", "%"+s.getSearch()+"%").setParameter("exclude", s.getExclude()).getResultList();
 
             for (Profile p: tmp) {
                out.add(new profile(p.getU_id(),p.getName(),p.getAge(),p.getIsFemale(),p.getDescription()));

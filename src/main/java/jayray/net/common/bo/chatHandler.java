@@ -22,10 +22,11 @@ public class chatHandler {
     static EntityManager em;
 
     @GET
-    public static List<message> getMessages(message messages) {
+    @Path("{id}/{other}")
+    public static List<message> getMessages(@PathParam("id") long me,@PathParam("other") long other) {
         em = emf.createEntityManager();
         em.getTransaction().begin();
-        List<ChatMessage> out = em.createNamedQuery("getChat").setParameter("sender", messages.getSender()).setParameter("receiver", messages.getRecvier()).getResultList();
+        List<ChatMessage> out = em.createNamedQuery("getChat").setParameter("sender", me).setParameter("receiver", other).getResultList();
         em.getTransaction().commit();
 
 
