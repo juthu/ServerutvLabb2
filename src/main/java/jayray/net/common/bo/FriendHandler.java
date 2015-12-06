@@ -3,6 +3,7 @@ package jayray.net.common.bo;
 import com.google.gson.Gson;
 import jayray.net.common.model.User;
 import jayray.net.common.viewModel.Follower;
+import jayray.net.common.viewModel.ProfileList;
 import jayray.net.common.viewModel.profile;
 
 import javax.persistence.EntityManager;
@@ -61,7 +62,7 @@ public class FriendHandler {
 
     @GET
     @Path("followers/{id}")
-    public static Collection<profile> getFollowers(@PathParam("id") long id){//TODO id only
+    public static String getFollowers(@PathParam("id") long id){//TODO id only
         em = emf.createEntityManager();
         User me = UserHandler.getUser(id,em);
         Collection<User> out= me.getFollow();
@@ -72,13 +73,15 @@ public class FriendHandler {
         }
         System.out.println(out);
         em.close();
-        return followers;
+        ProfileList outList = new ProfileList();
+        outList.setList(followers);
+        return new Gson().toJson(outList);
     }
 
 
     @GET
     @Path("following/{id}")
-    public static Collection<profile> countFollowing(@PathParam("id") long id){//TODO id only
+    public static String countFollowing(@PathParam("id") long id){//TODO id only
         em = emf.createEntityManager();
         User user = UserHandler.getUser(id,em);
          Collection<User> out= user.getFollowed();
@@ -93,8 +96,9 @@ public class FriendHandler {
 //                "ON user.u_id = tbl_friends.f_id " +
 //                "WHERE f_id =:fid").setParameter("fid",u.getU_id()).getResultList();
         em.close();
-
-        return following;
+        ProfileList outList = new ProfileList();
+        outList.setList(following);
+        return new Gson().toJson(outList);
     }
 //
 //    public class custom{

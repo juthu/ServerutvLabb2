@@ -13,6 +13,8 @@ public class profile {
     private int age;
     private boolean isFemale;
     private String desc;
+    private String gender;//TODO GSON maGi?
+
 
     public profile(String name) {
         this.name = name;

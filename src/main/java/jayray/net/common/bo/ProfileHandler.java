@@ -3,6 +3,7 @@ package jayray.net.common.bo;
 import com.google.gson.Gson;
 import jayray.net.common.model.Profile;
 import jayray.net.common.model.User;
+import jayray.net.common.viewModel.ProfileList;
 import jayray.net.common.viewModel.Search;
 import jayray.net.common.viewModel.profile;
 
@@ -74,11 +75,11 @@ public class ProfileHandler{
 
     @POST
     @Path("search")
-    public static Collection<profile> search(String json){
+    public static String search(String json){
         Gson gson=new Gson();
         Search s=gson.fromJson(json,Search.class);
 
-        Collection<profile> out = new ArrayList<profile>();
+        ArrayList<profile> out = new ArrayList<profile>();
         try {
             em = emf.createEntityManager();
             Collection <Profile> tmp = em.createNamedQuery("findUserByUsernameContains").setParameter("search", "%"+s.getSearch()+"%").setParameter("exclude", s.getExclude()).getResultList();
@@ -91,7 +92,10 @@ public class ProfileHandler{
         }finally {
             em.close();
         }
-        return out;
+        ProfileList outList = new ProfileList();
+        outList.setList(out);
+
+        return gson.toJson(outList);//TODO idk denna funkar inte men friends funkar ???
     }
 
         static void setDefaultProfile(User u, EntityManager em){

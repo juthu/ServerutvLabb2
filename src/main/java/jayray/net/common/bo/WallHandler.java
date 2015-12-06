@@ -3,6 +3,7 @@ package jayray.net.common.bo;
 import com.google.gson.Gson;
 import jayray.net.common.model.User;
 import jayray.net.common.model.WallPost;
+import jayray.net.common.viewModel.PostList;
 import jayray.net.common.viewModel.post;
 
 import javax.persistence.EntityManager;
@@ -12,7 +13,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by sirena on 2015-11-18.
@@ -56,7 +56,7 @@ public class WallHandler {
 
     @GET
     @Path("{id}")
-    public static List<post> getPosts(@PathParam("id") long id) {//magi med id
+    public static String getPosts(@PathParam("id") long id) {//magi med id
         em = emf.createEntityManager();
         User u = UserHandler.getUser(id, em);
         //TODO should close em
@@ -66,7 +66,9 @@ public class WallHandler {
             out.add(new post(wp.getUser().getU_id(),wp.getPost()));
         }
         em.close();
-        return out;
+        PostList outList = new PostList();
+        outList.setList(out);
+        return new Gson().toJson(outList);
     }
 
     public static post getPost(long id) {
