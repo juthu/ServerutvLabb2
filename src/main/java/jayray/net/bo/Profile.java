@@ -15,6 +15,10 @@ import java.io.Serializable;
 
 @NamedQueries({
         @NamedQuery(
+                name = "addProfile",
+                query = "from User u where u.username = :name"
+        ),
+        @NamedQuery(
                 name = "findUserByUsernameContains",
                 query = "from Profile p where (p.name like :search and p.name <> :exclude )"
         )

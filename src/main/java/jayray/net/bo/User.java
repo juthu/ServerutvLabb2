@@ -27,6 +27,10 @@ import java.util.Collection;
                 query = "from User u where u.u_id = :id"
         ),
         @NamedQuery(
+                name = "findPeople",
+                query = "from User u where u.u_id >= :id"
+        ),
+        @NamedQuery(
         name = "findUserByUsernamePassword",
         query = "from User u where u.username = :name and u.password= :password"
 )
